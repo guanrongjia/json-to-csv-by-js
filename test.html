@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script src='./json-data.js' ></script> 
+<script src='./FileSaver.js' ></script>
+<script>
+
+ //we get jsonData from json-data.js
+function filterData(){
+	var keyNameList = ['id', 'title', 'subtitle', 'app_show_num', 'app_click_num', 'app_rate', 'obj_type', 'obj_value', 'create_time', 'user_id', 'status']
+	var fileList = ["ID,标题,副标题,总曝光量,总点击量,总点击率,对象类型,对象值,创建时间,创建人,状态"];
+	
+	jsonData.forEach(function(row){
+		var lineList = [];
+		keyNameList.forEach(function(key){
+			lineList.push(row[key] ||  ' ')
+		});
+		fileList.push(lineList.join(','))
+	})
+	fileList = [fileList.join('\n')]; //the content to write to csv should be a long string
+	return fileList 
+}
+
+function saveDataToCSV(fileList){
+	var file = new File(fileList, "namibox-message-push.csv", { type: "text/plain;charset=utf-8" });
+	saveAs(file);
+}
+
+
+var fileList = filterData()
+saveDataToCSV(fileList)
+</script>
+
+</body>
+</html>
